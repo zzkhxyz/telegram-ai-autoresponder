@@ -1,0 +1,29 @@
+# Secrets & sessions
+.env
+*.session
+*.session-journal
+
+# Database
+*.db
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+dist/
+build/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+
+# Docker
+*.log
+
+# Tooling artifacts
+.agents/
+skills-lock.json

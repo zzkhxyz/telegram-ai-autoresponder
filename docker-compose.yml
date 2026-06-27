@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  ownbot:
+    build: .
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      # Persist session file and SQLite DB between container restarts
+      - ./data:/app/data

@@ -10,6 +10,8 @@ Built as a pet project to automate handling incoming messages — with conversat
 ## Features
 
 - **Audience-aware replies** — picks a friendly or professional system prompt based on whether the sender is a saved contact.
+- **Voice-message support** — transcribes incoming voice notes via Deepgram (STT) and answers them like any text message (optional; enabled by setting `DEEPGRAM_API_KEY`).
+- **Voice replies** — when the incoming message is a voice note, the bot replies with a synthesised voice note too (edge-tts → Ogg/Opus). Free, no extra key, Russian-capable; falls back to text on any failure.
 - **Conversation context** — keeps a sliding window of recent messages per user (SQLite) so replies stay coherent.
 - **Per-session reply cap** — after N replies the bot signs off gracefully and pauses, so it never spams.
 - **Human-like behaviour** — shows a "typing…" action and adds a randomized delay before answering.
@@ -35,6 +37,8 @@ handlers/
 ai/
   prompts.py            # friendly / professional system prompts + injection anchor
   client.py             # Groq API wrapper
+  transcribe.py         # Deepgram wrapper for voice-note transcription (STT)
+  tts.py                # edge-tts → Ogg/Opus voice replies (TTS)
 db/
   manager.py            # async SQLite: history, reply counts, pause state
 ```
@@ -58,6 +62,11 @@ cp .env.example .env
 | `TELEGRAM_API_ID` / `TELEGRAM_API_HASH` | From my.telegram.org |
 | `TELEGRAM_PHONE` | Your phone number (with country code) |
 | `GROQ_API_KEY` | Groq API key |
+| `DEEPGRAM_API_KEY` | Deepgram key — enables voice-note transcription (leave empty to disable) |
+| `DEEPGRAM_MODEL` | Deepgram model (default `nova-2`) |
+| `DEEPGRAM_LANGUAGE` | Language of incoming voice notes (default `ru`) |
+| `VOICE_REPLY_ENABLED` | Reply to voice notes with a voice note (default `true`) |
+| `TTS_VOICE` | edge-tts voice for replies (default `ru-RU-DmitryNeural`) |
 | `CONTEXT_WINDOW` | How many recent messages to send to the LLM (default 6) |
 | `MAX_MESSAGES_PER_SESSION` | Replies before the bot signs off (default 6) |
 
